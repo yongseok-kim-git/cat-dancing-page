@@ -1,0 +1,103 @@
+/*
+ * Dance animations. Only transform/opacity are animated (GPU-composited).
+ * Duration scales with --speed (set inline from React).
+ * Pause = animation-play-state: paused, so the cat freezes mid-pose.
+ */
+
+.cat, .cat-shadow, .cat-svg *, .note {
+  animation-play-state: paused;
+}
+.is-playing,
+.is-playing .cat-svg * { animation-play-state: running; }
+
+.cat { --dur: calc(1.2s / var(--speed, 1)); will-change: transform; transform-origin: 50% 100%; animation-duration: var(--dur); animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+.cat-shadow { --dur: calc(1.2s / var(--speed, 1)); animation-duration: var(--dur); animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+
+/* stopped (not just paused-before-start) cat eases back smoothly when switching moves */
+.cat.is-paused { transition: transform 0.4s ease; }
+
+/* SVG parts rotate around their own box */
+.cat-svg g, .cat-svg ellipse { transform-box: fill-box; }
+.cat-svg * { animation-duration: calc(0.6s / var(--speed, 1)); animation-iteration-count: infinite; animation-timing-function: ease-in-out; animation-direction: alternate; }
+
+.cat-tail { transform-origin: 0% 100%; animation-name: tail-wag; }
+.cat-arm--left { transform-origin: 100% 100%; animation-name: arm-left; }
+.cat-arm--right { transform-origin: 0% 100%; animation-name: arm-right; }
+.cat-ear--left { transform-origin: 70% 100%; animation-name: ear-left; }
+.cat-ear--right { transform-origin: 30% 100%; animation-name: ear-right; }
+.cat-head { transform-origin: 50% 90%; animation-name: head-bob; }
+.cat-eyes { transform-origin: 50% 50%; animation-name: blink; animation-duration: calc(3s / var(--speed, 1)); animation-direction: normal; }
+.cat-foot--left { transform-origin: 50% 100%; animation-name: foot-tap; }
+.cat-foot--right { transform-origin: 50% 100%; animation-name: foot-tap; animation-delay: calc(-0.6s / var(--speed, 1)); }
+
+/* ---------- whole-body moves ---------- */
+.cat.move-sway { animation-name: sway; }
+.cat.move-jump { animation-name: jump; animation-timing-function: cubic-bezier(0.3, 0, 0.4, 1); }
+.cat.move-spin { animation-name: spin; animation-duration: calc(1.6s / var(--speed, 1)); }
+.cat.move-groove { animation-name: groove; }
+
+.cat-shadow.move-jump { animation-name: shadow-jump; }
+.cat-shadow.move-groove { animation-name: shadow-groove; }
+.cat-shadow.move-sway { animation-name: shadow-sway; }
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-10deg) translateX(-6%); }
+  50%      { transform: rotate(10deg) translateX(6%); }
+}
+@keyframes jump {
+  0%, 100% { transform: translateY(0) scale(1.08, 0.9); }
+  15%      { transform: translateY(0) scale(0.95, 1.06); }
+  50%      { transform: translateY(-28%) scale(1, 1) rotate(-4deg); }
+  85%      { transform: translateY(0) scale(1.06, 0.92); }
+}
+@keyframes spin {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(180deg) scale(0.88); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+@keyframes groove {
+  0%, 100% { transform: scale(1) translateY(0); }
+  25%      { transform: scale(1.12, 0.9) translateY(4%) rotate(-5deg); }
+  50%      { transform: scale(0.94, 1.08) translateY(-6%); }
+  75%      { transform: scale(1.12, 0.9) translateY(4%) rotate(5deg); }
+}
+
+@keyframes shadow-jump {
+  0%, 100%, 15%, 85% { transform: scaleX(1); opacity: 1; }
+  50%                { transform: scaleX(0.55); opacity: 0.45; }
+}
+@keyframes shadow-groove {
+  0%, 50%, 100% { transform: scaleX(1); }
+  25%, 75%      { transform: scaleX(1.15); }
+}
+@keyframes shadow-sway {
+  0%, 100% { transform: translateX(-10%); }
+  50%      { transform: translateX(10%); }
+}
+
+/* ---------- body parts ---------- */
+@keyframes tail-wag  { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+@keyframes arm-left  { from { transform: rotate(-25deg); } to { transform: rotate(20deg); } }
+@keyframes arm-right { from { transform: rotate(25deg); }  to { transform: rotate(-20deg); } }
+@keyframes ear-left  { from { transform: rotate(0deg); }   to { transform: rotate(-10deg); } }
+@keyframes ear-right { from { transform: rotate(0deg); }   to { transform: rotate(10deg); } }
+@keyframes head-bob  { from { transform: rotate(-6deg); }  to { transform: rotate(6deg); } }
+@keyframes foot-tap  { from { transform: translateY(0); }  to { transform: translateY(-6px); } }
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96%           { transform: scaleY(0.1); }
+}
+
+/* ---------- music notes ---------- */
+.note { animation: note-float calc(2s / var(--speed, 1)) ease-out infinite; animation-delay: calc(var(--i) * 0.6s / var(--speed, 1)); animation-play-state: running; }
+@keyframes note-float {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(-120%) rotate(20deg); opacity: 0; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .cat.move-spin { animation-name: sway; }
+  .note { display: none; }
+}

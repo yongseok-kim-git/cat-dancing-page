@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" role="img" aria-label="고양이">
+  <path d="M140 190 C185 185 190 130 165 110" fill="none" stroke="#f0a04b" stroke-width="14" stroke-linecap="round"/>
+  <ellipse cx="100" cy="175" rx="52" ry="50" fill="#f6b25e"/>
+  <ellipse cx="100" cy="185" rx="30" ry="32" fill="#fde7c7"/>
+  <polygon points="52,70 62,20 92,52" fill="#f6b25e"/>
+  <polygon points="148,70 138,20 108,52" fill="#f6b25e"/>
+  <circle cx="100" cy="90" r="52" fill="#f6b25e"/>
+  <ellipse cx="80" cy="88" rx="7" ry="10" fill="#2b2118"/>
+  <ellipse cx="120" cy="88" rx="7" ry="10" fill="#2b2118"/>
+  <polygon points="94,104 106,104 100,111" fill="#e7746e"/>
+</svg>
